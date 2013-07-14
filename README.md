@@ -25,8 +25,9 @@ Installation
 2. Copy `sensu-run.bash_completion` to `/etc/bash_completion.d`
 
 ```bash
-    cp sensu-run.bash_completion /etc/bash_completion.d
+    cp sensu-run.bash_completion /etc/bash_completion.d/sensu-run
 ```
+**NOTE** you'll need to source the file to get bash completion working without logging out and back in again
 
 TODO
 ===========

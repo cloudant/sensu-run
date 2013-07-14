@@ -7,6 +7,7 @@ Usage
 ========
 
 To use the tool, run the senu-run command and pass check name(s) as parameters. 
+
 ```bash
     sensu-run load-avg memory-usage
 ```
@@ -17,10 +18,12 @@ Installation
 ============
 
 1. Copy `sensu-run` to a directory thats in your path (eg /usr/bin)
+
 ```bash
     cp sensu-run /usr/bin
 ```
 2. Copy `sensu-run.bash_completion` to `/etc/bash_completion.d`
+
 ```bash
     cp sensu-run.bash_completion /etc/bash_completion.d
 ```

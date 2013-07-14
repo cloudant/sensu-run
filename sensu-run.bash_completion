@@ -1,0 +1,9 @@
+_sensu_run_show()
+{
+        local cur
+
+        COMPREPLY=()
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=($( compgen -W "$(for x in /etc/sensu/conf.d/checks/*.json; do echo $(basename ${x%.json}); done)" -- $cur ) )
+}
+complete -F _sensu_run_show sensu-run

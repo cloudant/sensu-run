@@ -1,0 +1,51 @@
+#!/opt/sensu/embedded/bin/ruby
+
+require 'json'
+
+def colorize(text, color_code)
+  "\e[#{color_code}m#{text}\e[0m"
+end
+
+def red(text); colorize(text, 31); end
+def green(text); colorize(text, 32); end
+def yellow(text); colorize(text, 33); end
+def blue(text); colorize(text, 34); end
+def magenta(text); colorize(text, 35); end
+def cyan(text); colorize(text, 36); end
+def white(text); colorize(text, 37); end
+
+ARGV.each do |check_name|
+  check_def = "/etc/sensu/conf.d/checks/#{check_name}.json"
+  if File.exists? check_def
+    begin
+      puts white("===============================")
+      # read json file
+      check = JSON.parse( IO.read(check_def) )["checks"][check_name]
+      puts cyan("#{check_name}")
+      if check['command'].split().first =~ /.rb$/
+        command = "sudo -u sensu /opt/sensu/embedded/bin/ruby /etc/sensu/plugins/#{check['command']}"
+      else
+        command = "sudo -u sensu /etc/sensu/plugins/#{check['command']}"
+      end
+      puts cyan("Executing: #{command}")
+      r = `#{command}`
+      exit_code = $?.exitstatus
+      exit_string = "Exit code: #{exit_code}"
+      if exit_code == 0
+        puts green(r)
+      elsif exit_code == 1
+        puts yellow(r)
+      elsif exit_code == 2
+        puts red(r)
+      else
+        puts magenta(r)
+      end
+      puts cyan(exit_string)
+    rescue
+
+    end
+    puts white("===============================")
+  else
+    puts "#{check} does not exist: #{check_def}"
+  end
+end
